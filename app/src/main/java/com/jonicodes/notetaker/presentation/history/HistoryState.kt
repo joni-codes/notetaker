@@ -7,6 +7,7 @@ enum class SortOrder { NEWEST_FIRST, OLDEST_FIRST }
 data class HistoryState(
     val summaries: List<NoteSummary> = emptyList(),
     val filteredSummaries: List<NoteSummary> = emptyList(),
+    val searchQuery: String = "",
     val sortOrder: SortOrder = SortOrder.NEWEST_FIRST,
     val participantFilter: String? = null,
     val allParticipants: List<String> = emptyList(),

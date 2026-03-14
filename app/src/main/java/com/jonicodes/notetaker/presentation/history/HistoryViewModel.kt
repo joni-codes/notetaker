@@ -72,6 +72,11 @@ class HistoryViewModel @Inject constructor(
         applyFiltersAndSort()
     }
 
+    fun onSearchQueryChanged(query: String) {
+        _state.update { it.copy(searchQuery = query) }
+        applyFiltersAndSort()
+    }
+
     fun onToggleFilterSheet() {
         _state.update { it.copy(showFilterSheet = !it.showFilterSheet) }
     }
@@ -83,6 +88,15 @@ class HistoryViewModel @Inject constructor(
     private fun applyFiltersAndSort() {
         val current = _state.value
         var result = current.summaries
+
+        val query = current.searchQuery.trim()
+        if (query.isNotEmpty()) {
+            result = result.filter { summary ->
+                summary.title.contains(query, ignoreCase = true) ||
+                    summary.summary.contains(query, ignoreCase = true) ||
+                    summary.rawTranscript.contains(query, ignoreCase = true)
+            }
+        }
 
         current.participantFilter?.let { filter ->
             result = result.filter { summary ->
