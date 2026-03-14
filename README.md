@@ -59,7 +59,6 @@ com.jonicodes.notetaker/
 ## Device Requirements
 - **OS**: Android 14+ (API 34).
 - **Hardware**: Device must support **Google AICore** (e.g., Pixel 8 series or newer, Samsung S24 series or newer).
-- **Fallback**: If the device does not support on-device AI models, the app will redirect to an `UnsupportedScreen` explaining the hardware limitation.
 
 ## How to Build
 1. Clone the repository.
