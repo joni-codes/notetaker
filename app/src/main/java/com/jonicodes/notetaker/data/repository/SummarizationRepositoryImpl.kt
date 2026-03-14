@@ -54,14 +54,7 @@ class SummarizationRepositoryImpl @Inject constructor(
                 }
             }
 
-            val participantContext = if (participants.isNotEmpty()) {
-                "Participants: ${participants.joinToString(", ")}.\n\n"
-            } else {
-                ""
-            }
-
-            val formattedInput = "${participantContext}${transcript}"
-            val summaryText = dataSource.summarize(formattedInput)
+            val summaryText = dataSource.summarize(transcript)
 
             val title = extractTitle(summaryText, transcript)
 
