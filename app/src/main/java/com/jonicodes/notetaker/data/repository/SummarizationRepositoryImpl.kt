@@ -67,7 +67,7 @@ class SummarizationRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun extractTitle(summary: String, transcript: String): String {
+    internal fun extractTitle(summary: String, transcript: String): String {
         val bullets = summary.lineSequence()
             .map { it.trim() }
             .filter { it.isNotBlank() }
