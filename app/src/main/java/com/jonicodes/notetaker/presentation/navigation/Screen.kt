@@ -1,6 +1,7 @@
 package com.jonicodes.notetaker.presentation.navigation
 
 sealed class Screen(val route: String) {
+    data object Paste : Screen("paste")
     data object Recording : Screen("recording")
     data object History : Screen("history")
     data object SummaryResult : Screen("summary_result/{transcript}/{participants}") {

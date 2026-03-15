@@ -8,12 +8,15 @@ Security and privacy are central to the design. All processing happens locally o
 
 ## Features
 - **Live Transcription**: Real-time conversion of speech to text using continuous Android SpeechRecognizer sessions.
+- **Paste Transcript**: Dedicated screen for typing or pasting pre-existing transcripts without recording.
 - **AI Summarization**: Local generation of concise titles and bulleted summaries using ML Kit GenAI (Gemini Nano).
+- **AI-Generated Titles**: Separate 1-point summarization call to produce an ultra-concise title, with heuristic fallback.
 - **Contextual Inference**: Automatic identification of participants and discussion themes within the generated summary.
 - **Editable Metadata**: Post-recording screen for refining auto-generated titles and adding/removing participants.
 - **Comprehensive History**: Persistent storage of all sessions with full-text search across titles, summaries, and transcripts.
 - **Flexible Organization**: Sort by date or filter records by specific participants.
 - **Session Management**: Swipe-to-delete functionality for history management and a dedicated mic permission flow.
+- **Three-Tab Navigation**: Bottom navigation bar with Paste, Record (center), and History tabs.
 - **Hardware Verification**: Automatic detection of Google AICore support with a dedicated fallback for unsupported devices.
 
 ## Architecture
@@ -50,6 +53,7 @@ com.jonicodes.notetaker/
     ├── components/     # Reusable UI widgets
     ├── history/        # History list and filtering UI
     ├── navigation/     # Bottom bar and screen routing logic
+    ├── paste/          # Manual transcript paste/type input UI
     ├── recording/      # Live recording and transcription UI
     ├── summary/        # Post-recording and detail summary screens
     ├── theme/          # Material 3 color schemes and typography

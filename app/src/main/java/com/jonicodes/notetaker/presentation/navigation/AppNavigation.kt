@@ -3,8 +3,10 @@ package com.jonicodes.notetaker.presentation.navigation
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material3.Icon
@@ -27,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jonicodes.notetaker.presentation.history.HistoryScreen
 import com.jonicodes.notetaker.presentation.history.SummaryDetailScreen
+import com.jonicodes.notetaker.presentation.paste.PasteScreen
 import com.jonicodes.notetaker.presentation.recording.RecordingScreen
 import com.jonicodes.notetaker.presentation.summary.SummaryResultScreen
 import com.jonicodes.notetaker.presentation.unsupported.UnsupportedScreen
@@ -41,6 +44,7 @@ private data class BottomNavItem(
 )
 
 private val bottomNavItems = listOf(
+    BottomNavItem(Screen.Paste, "Paste", Icons.Filled.ContentPaste, Icons.Outlined.ContentPaste),
     BottomNavItem(Screen.Recording, "Record", Icons.Filled.Mic, Icons.Outlined.Mic),
     BottomNavItem(Screen.History, "History", Icons.Filled.History, Icons.Outlined.History),
 )
@@ -58,6 +62,7 @@ fun AppNavigation(isAiAvailable: Boolean) {
     val currentDestination = navBackStackEntry?.destination
 
     val showBottomBar = currentDestination?.route in listOf(
+        Screen.Paste.route,
         Screen.Recording.route,
         Screen.History.route,
     )
@@ -103,6 +108,18 @@ fun AppNavigation(isAiAvailable: Boolean) {
             startDestination = Screen.Recording.route,
             modifier = Modifier.padding(innerPadding),
         ) {
+            composable(Screen.Paste.route) {
+                PasteScreen(
+                    onNavigateToSummary = { transcript, participants ->
+                        val encodedTranscript = URLEncoder.encode(transcript, "UTF-8")
+                        val encodedParticipants = URLEncoder.encode(participants, "UTF-8")
+                        navController.navigate(
+                            Screen.SummaryResult.createRoute(encodedTranscript, encodedParticipants)
+                        )
+                    },
+                )
+            }
+
             composable(Screen.Recording.route) {
                 RecordingScreen(
                     onNavigateToSummary = { transcript, participants ->
