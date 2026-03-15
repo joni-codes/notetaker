@@ -1,7 +1,4 @@
 # Notetaker
-Focus on the conversation, not the transcript.
-
-## Philosophy
 Notetaker is built on the premise that capturing details shouldn't come at the cost of being present in a discussion. By utilizing on-device generative AI, the app handles the cognitive load of transcription and summarization so you can focus on the actual interaction. 
 
 Security and privacy are central to the design. All processing happens locally on the device via Gemini Nano and Android's SpeechRecognizer. There are zero cloud dependencies, meaning your conversations never leave your hardware.
