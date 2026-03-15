@@ -1,7 +1,5 @@
 package com.jonicodes.notetaker.presentation.summary
 
-import com.jonicodes.notetaker.domain.model.NoteSummary
-
 data class SummaryResultState(
     val isLoading: Boolean = true,
     val isSaving: Boolean = false,

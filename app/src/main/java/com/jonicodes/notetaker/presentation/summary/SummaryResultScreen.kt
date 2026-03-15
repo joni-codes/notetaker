@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -150,8 +149,12 @@ fun SummaryResultScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         FlowRow(
-                            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
-                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(4.dp),
+                            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
+                                8.dp
+                            ),
+                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
+                                4.dp
+                            ),
                         ) {
                             state.participants.forEach { name ->
                                 AssistChip(
