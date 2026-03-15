@@ -135,19 +135,21 @@ class SummarizationRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("AVAILABLE status calls dataSource and returns Success with correct title")
+        @DisplayName("AVAILABLE status calls dataSource and returns Success with AI-generated title")
         fun summarize_availableReturnsSuccess() = runTest {
             val transcript = "This is a test transcript."
             val summaryText = "• This is the summary."
+            val titleText = "Test Discussion"
             
             whenever(dataSource.checkAvailability()).thenReturn(FeatureStatus.AVAILABLE)
             whenever(dataSource.summarize(transcript)).thenReturn(summaryText)
+            whenever(dataSource.summarizeToTitle(transcript)).thenReturn(titleText)
             
             val result = repository.summarize(transcript, emptyList())
             
             assertTrue(result is SummarizationResult.Success)
             val success = result as SummarizationResult.Success
-            assertEquals("This is the summary", success.title)
+            assertEquals("Test Discussion", success.title)
             assertEquals(summaryText, success.summary)
             verify(dataSource, never()).downloadModel()
         }
@@ -157,17 +159,20 @@ class SummarizationRepositoryImplTest {
         fun summarize_downloadableTriggersDownloadAndSummarizes() = runTest {
             val transcript = "Valid transcript"
             val summaryText = "• Downloaded summary"
+            val titleText = "Downloaded Title"
             
             whenever(dataSource.checkAvailability()).thenReturn(FeatureStatus.DOWNLOADABLE)
             whenever(dataSource.downloadModel()).thenReturn(true)
             whenever(dataSource.summarize(transcript)).thenReturn(summaryText)
+            whenever(dataSource.summarizeToTitle(transcript)).thenReturn(titleText)
             
             val result = repository.summarize(transcript, emptyList())
             
             verify(dataSource).downloadModel()
             verify(dataSource).summarize(transcript)
+            verify(dataSource).summarizeToTitle(transcript)
             assertTrue(result is SummarizationResult.Success)
-            assertEquals("Downloaded summary", (result as SummarizationResult.Success).title)
+            assertEquals("Downloaded Title", (result as SummarizationResult.Success).title)
         }
 
         @Test
@@ -178,12 +183,31 @@ class SummarizationRepositoryImplTest {
             whenever(dataSource.checkAvailability()).thenReturn(FeatureStatus.DOWNLOADING)
             whenever(dataSource.downloadModel()).thenReturn(true)
             whenever(dataSource.summarize(transcript)).thenReturn("• Downloading summary")
+            whenever(dataSource.summarizeToTitle(transcript)).thenReturn("Downloading Title")
             
             val result = repository.summarize(transcript, emptyList())
             
             verify(dataSource).downloadModel()
             verify(dataSource).summarize(transcript)
             assertTrue(result is SummarizationResult.Success)
+        }
+
+        @Test
+        @DisplayName("Falls back to extractTitle when summarizeToTitle throws exception")
+        fun summarize_fallsBackToExtractTitleOnError() = runTest {
+            val transcript = "Valid transcript"
+            val summaryText = "• Fallback summary point"
+
+            whenever(dataSource.checkAvailability()).thenReturn(FeatureStatus.AVAILABLE)
+            whenever(dataSource.summarize(transcript)).thenReturn(summaryText)
+            whenever(dataSource.summarizeToTitle(transcript)).thenThrow(RuntimeException("Title gen failed"))
+
+            val result = repository.summarize(transcript, emptyList())
+
+            assertTrue(result is SummarizationResult.Success)
+            val success = result as SummarizationResult.Success
+            assertEquals("Fallback summary point", success.title)
+            assertEquals(summaryText, success.summary)
         }
 
         @Test

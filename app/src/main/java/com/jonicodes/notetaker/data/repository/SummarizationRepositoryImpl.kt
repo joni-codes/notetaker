@@ -56,7 +56,11 @@ class SummarizationRepositoryImpl @Inject constructor(
 
             val summaryText = dataSource.summarize(transcript)
 
-            val title = extractTitle(summaryText, transcript)
+            val title = try {
+                dataSource.summarizeToTitle(transcript)
+            } catch (_: Exception) {
+                extractTitle(summaryText, transcript)
+            }
 
             SummarizationResult.Success(
                 title = title,

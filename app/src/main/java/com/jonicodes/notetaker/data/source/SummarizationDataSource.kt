@@ -19,6 +19,7 @@ class SummarizationDataSource @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private var summarizer: Summarizer? = null
+    private var titleSummarizer: Summarizer? = null
 
     private fun getOrCreateSummarizer(): Summarizer {
         return summarizer ?: run {
@@ -29,6 +30,18 @@ class SummarizationDataSource @Inject constructor(
                 .setLongInputAutoTruncationEnabled(true)
                 .build()
             Summarization.getClient(options).also { summarizer = it }
+        }
+    }
+
+    private fun getOrCreateTitleSummarizer(): Summarizer {
+        return titleSummarizer ?: run {
+            val options = SummarizerOptions.builder(context)
+                .setInputType(SummarizerOptions.InputType.CONVERSATION)
+                .setOutputType(SummarizerOptions.OutputType.ONE_BULLET)
+                .setLanguage(SummarizerOptions.Language.ENGLISH)
+                .setLongInputAutoTruncationEnabled(true)
+                .build()
+            Summarization.getClient(options).also { titleSummarizer = it }
         }
     }
 
@@ -65,8 +78,22 @@ class SummarizationDataSource @Inject constructor(
         return result.summary
     }
 
+    suspend fun summarizeToTitle(text: String): String {
+        val client = getOrCreateTitleSummarizer()
+        val request = SummarizationRequest.builder(text).build()
+        val result = client.runInference(request).await()
+        return result.summary
+            .removePrefix("•").removePrefix("-").removePrefix("*")
+            .removePrefix("1.")
+            .trim()
+            .removeSuffix(".")
+            .trim()
+    }
+
     fun close() {
         summarizer?.close()
         summarizer = null
+        titleSummarizer?.close()
+        titleSummarizer = null
     }
 }
