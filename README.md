@@ -3,7 +3,12 @@ Notetaker is built on the premise that capturing details shouldn't come at the c
 
 Security and privacy are central to the design. All processing happens locally on the device via Gemini Nano and Android's SpeechRecognizer. There are zero cloud dependencies, meaning your conversations never leave your hardware.
 
+| Recording Screen | Paste Screen | History Screen |
+|------------------|--------------|----------------|
+| ![WhatsApp Image 2026-03-15 at 15 34 17](https://github.com/user-attachments/assets/6ffb591c-b60e-4943-a5d0-3a759359cc32) | ![WhatsApp Image 2026-03-15 at 15 34 17 (1)](https://github.com/user-attachments/assets/c23e401f-a439-47e4-a95a-3d99f1b0c512) | ![WhatsApp Image 2026-03-15 at 15 34 17 (2)](https://github.com/user-attachments/assets/21288b02-fb5e-4b46-94de-d8abe87e3a35) |
+
 ## Features
+
 - **Live Transcription**: Real-time conversion of speech to text using continuous Android SpeechRecognizer sessions.
 - **Paste Transcript**: Dedicated screen for typing or pasting pre-existing transcripts without recording.
 - **AI Summarization**: Local generation of concise titles and bulleted summaries using ML Kit GenAI (Gemini Nano).
